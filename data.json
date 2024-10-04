@@ -1,0 +1,57 @@
+{
+  "customers": [
+    {
+      "id": "1",
+      "name": "customer1",
+      "password": "password123"
+    }
+  ],
+  "merchants": [
+    {
+      "id": "merchant_id_1",
+      "name": "Merchant One"
+    },
+    {
+      "id": "merchant_id_2",
+      "name": "Merchant Two"
+    }
+  ],
+  "history": [
+    {
+      "id": "1",
+      "customer_id": "1",
+      "amount": 0,
+      "action": "login"
+    },
+    {
+      "id": "2",
+      "customer_id": "1",
+      "amount": 100000,
+      "action": "payment"
+    },
+    {
+      "id": "3",
+      "customer_id": "1",
+      "amount": 0,
+      "action": "login"
+    },
+    {
+      "id": "4",
+      "customer_id": "1",
+      "amount": 0,
+      "action": "login"
+    },
+    {
+      "id": "5",
+      "customer_id": "1",
+      "amount": 0,
+      "action": "login"
+    },
+    {
+      "id": "6",
+      "customer_id": "1",
+      "amount": 150.75,
+      "action": "payment to merchant"
+    }
+  ]
+}
