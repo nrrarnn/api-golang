@@ -1,4 +1,4 @@
-# API Documentation for Personal Finance App
+# API Documentation
 
 ## Table of Contents
 - [Overview](#overview)
