@@ -7,16 +7,13 @@ import (
 	"os"
 	"strings"
 	"testing"
-
 	"api-golang/models"
-	"api-golang/handlers" // Import handler yang sesuai
+	"api-golang/handlers" 
 )
 
 func TestLoginHandler(t *testing.T) {
-	// Set JWT_SECRET untuk testing
 	os.Setenv("JWT_SECRET", "mysecretkey")
 
-	// Setup: Inisialisasi data pelanggan untuk pengujian
 	models.Customers = []models.Customer{
 		{
 			ID:       "1",
