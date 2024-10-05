@@ -33,6 +33,11 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if len(models.Customers) == 0 {
+		http.Error(w, "No customers found", http.StatusInternalServerError)
+		return
+	}
+
 	for _, customer := range models.Customers {
 		if customer.Name == credentials.Name && customer.Password == credentials.Password {
 

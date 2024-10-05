@@ -64,6 +64,12 @@
       "customer_id": "1",
       "amount": 0,
       "action": "login"
+    },
+    {
+      "id": "9",
+      "customer_id": "1",
+      "amount": 0,
+      "action": "login"
     }
   ]
 }
