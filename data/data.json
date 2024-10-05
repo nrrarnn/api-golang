@@ -70,6 +70,18 @@
       "customer_id": "1",
       "amount": 0,
       "action": "login"
+    },
+    {
+      "id": "10",
+      "customer_id": "1",
+      "amount": 0,
+      "action": "login"
+    },
+    {
+      "id": "11",
+      "customer_id": "1",
+      "amount": 20000,
+      "action": "payment"
     }
   ]
 }

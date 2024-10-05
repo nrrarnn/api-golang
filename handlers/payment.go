@@ -13,14 +13,11 @@ func PaymentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Mengambil token JWT dari header Authorization
 	token := r.Header.Get("Authorization")
 	if token == "" {
 		http.Error(w, "Authorization token is missing", http.StatusUnauthorized)
 		return
 	}
-
-	// Memverifikasi token JWT di sini (tambahkan logika verifikasi token Anda)
 
 	var paymentData struct {
 		CustomerID string  `json:"customer_id"`
