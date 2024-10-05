@@ -1,6 +1,7 @@
 # API Documentation for Personal Finance App
 
 ## Table of Contents
+- [Overview](#overview)
 - [Getting Started](#getting-started)
 - [Navigasi Direktori](#navigasi-direktori)
 - [Authentication](#authentication)
