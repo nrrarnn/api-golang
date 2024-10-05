@@ -16,7 +16,7 @@
       "name": "Merchant Two"
     }
   ],
-  "history": [
+  "histories": [
     {
       "id": "1",
       "customer_id": "1",
@@ -26,8 +26,8 @@
     {
       "id": "2",
       "customer_id": "1",
-      "amount": 100000,
-      "action": "payment"
+      "amount": 0,
+      "action": "login"
     },
     {
       "id": "3",
@@ -50,8 +50,20 @@
     {
       "id": "6",
       "customer_id": "1",
-      "amount": 150.75,
-      "action": "payment to merchant"
+      "amount": 0,
+      "action": "login"
+    },
+    {
+      "id": "7",
+      "customer_id": "1",
+      "amount": 100.5,
+      "action": "payment"
+    },
+    {
+      "id": "8",
+      "customer_id": "1",
+      "amount": 0,
+      "action": "login"
     }
   ]
 }

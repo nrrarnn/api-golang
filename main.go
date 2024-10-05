@@ -4,12 +4,19 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"github.com/joho/godotenv"
 	"api-golang/handlers"
-	"api-golang/data"
+	"api-golang/models"
 )
 
 func main() {
-	err := data.LoadData()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	err = models.LoadData()
 	if err != nil {
 		log.Fatalf("Failed to load data: %v", err)
 	}

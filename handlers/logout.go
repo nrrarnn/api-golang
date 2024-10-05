@@ -3,7 +3,8 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"api-golang/data"
+	"strings"
+	"api-golang/models"
 )
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
@@ -12,25 +13,15 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if data.LoggedInCustomer == nil {
-		http.Error(w, "No user is logged in", http.StatusUnauthorized)
+	tokenString := r.Header.Get("Authorization")
+	if tokenString == "" {
+		http.Error(w, "No token provided", http.StatusUnauthorized)
 		return
 	}
 
-	data.Histories = append(data.Histories, data.History{
-		ID:         fmt.Sprintf("%d", len(data.Histories)+1),
-		CustomerID: data.LoggedInCustomer.ID,
-		Amount:     0,
-		Action:     "logout",
-	})
+	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 
-	err := data.SaveData()
-	if err != nil {
-		http.Error(w, "Failed to save data", http.StatusInternalServerError)
-		return
-	}
-
-	data.LoggedInCustomer = nil
+	models.BlacklistToken(tokenString)
 
 	fmt.Fprintf(w, "Logout successful")
 }

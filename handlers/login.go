@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"api-golang/data"
+	"time"
+	"api-golang/models" 
+	"github.com/golang-jwt/jwt"
+	"os"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
@@ -24,24 +27,47 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = data.LoadData()
+	err = models.LoadData()
 	if err != nil {
 		http.Error(w, "Failed to load data", http.StatusInternalServerError)
 		return
 	}
 
-	for _, customer := range data.Customers {
+	for _, customer := range models.Customers {
 		if customer.Name == credentials.Name && customer.Password == credentials.Password {
-			fmt.Fprintf(w, "Login successful for customer: %s", customer.Name)
 
-			data.Histories = append(data.Histories, data.History{
-				ID:         fmt.Sprintf("%d", len(data.Histories)+1),
+			jwtSecret := []byte(os.Getenv("JWT_SECRET"))
+			
+			token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+				"customer_id": customer.ID,
+				"exp":         time.Now().Add(time.Hour * 72).Unix(), // Token expiration time
+			})
+
+			tokenString, err := token.SignedString(jwtSecret)
+			if err != nil {
+				http.Error(w, "Failed to generate token", http.StatusInternalServerError)
+				return
+			}
+			response := struct {
+				Message string `json:"message"`
+				Token   string `json:"token"`
+			}{
+				Message: fmt.Sprintf("Login successful for customer: %s", customer.Name),
+				Token:   tokenString,
+			}
+
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(response)
+
+			models.Histories = append(models.Histories, models.History{
+				ID:         fmt.Sprintf("%d", len(models.Histories)+1),
 				CustomerID: customer.ID,
 				Amount:     0,
 				Action:     "login",
 			})
 
-			if err := data.SaveData(); err != nil {
+			if err := models.SaveData(); err != nil {
 				http.Error(w, "Failed to save data", http.StatusInternalServerError)
 			}
 

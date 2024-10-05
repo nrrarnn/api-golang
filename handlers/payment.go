@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"api-golang/data"
+	"api-golang/models"
 )
 
 func PaymentHandler(w http.ResponseWriter, r *http.Request) {
@@ -12,6 +12,15 @@ func PaymentHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
+
+	// Mengambil token JWT dari header Authorization
+	token := r.Header.Get("Authorization")
+	if token == "" {
+		http.Error(w, "Authorization token is missing", http.StatusUnauthorized)
+		return
+	}
+
+	// Memverifikasi token JWT di sini (tambahkan logika verifikasi token Anda)
 
 	var paymentData struct {
 		CustomerID string  `json:"customer_id"`
@@ -25,20 +34,20 @@ func PaymentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = data.LoadData()
+	err = models.LoadData()
 	if err != nil {
 		http.Error(w, "Failed to load data", http.StatusInternalServerError)
 		return
 	}
 
 	var validCustomer, validMerchant bool
-	for _, customer := range data.Customers {
+	for _, customer := range models.Customers {
 		if customer.ID == paymentData.CustomerID {
 			validCustomer = true
 			break
 		}
 	}
-	for _, merchant := range data.Merchants {
+	for _, merchant := range models.Merchants {
 		if merchant.ID == paymentData.MerchantID {
 			validMerchant = true
 			break
@@ -50,14 +59,14 @@ func PaymentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data.Histories = append(data.Histories, data.History{
-		ID:         fmt.Sprintf("%d", len(data.Histories)+1),
+	models.Histories = append(models.Histories, models.History{
+		ID:         fmt.Sprintf("%d", len(models.Histories)+1),
 		CustomerID: paymentData.CustomerID,
 		Amount:     paymentData.Amount,
 		Action:     "payment",
 	})
 
-	if err := data.SaveData(); err != nil {
+	if err := models.SaveData(); err != nil {
 		http.Error(w, "Failed to save data", http.StatusInternalServerError)
 		return
 	}
